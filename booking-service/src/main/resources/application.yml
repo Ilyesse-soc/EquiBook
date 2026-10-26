@@ -1,0 +1,22 @@
+server:
+  port: ${PORT:8083}
+spring:
+  application:
+    name: booking-service
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/equibook_bookings?replicaSet=rs0&directConnection=true}
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always

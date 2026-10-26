@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UpdateRider",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "commandId",
+    "commandType",
+    "occurredAt",
+    "payload"
+  ],
+  "properties": {
+    "commandId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "commandType": {
+      "const": "UpdateRider"
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "level"
+      ],
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lastName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 1
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "BEGINNER",
+            "GALOP_1",
+            "GALOP_2",
+            "GALOP_3",
+            "GALOP_4",
+            "GALOP_5",
+            "GALOP_6",
+            "GALOP_7"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,119 @@
+# Exécuter les requêtes une par une. Attendre la réplication entre les étapes.
+# Une réponse 404/409 transitoire peut être rejouée après convergence.
+
+@futureDate = {{$datetime iso8601 2 d}}
+@riderId = {{createRider.response.body.$.riderId}}
+@horseId = {{createHorse.response.body.$.horseId}}
+@bookingId = {{createBooking.response.body.$.bookingId}}
+@paymentId = {{createPayment.response.body.$.paymentId}}
+
+### createRider
+# @name createRider
+POST http://localhost:8081/riders
+Content-Type: application/json
+
+{
+  "commandId": "{{$guid}}",
+  "commandType": "CreateRider",
+  "occurredAt": "{{$datetime iso8601}}",
+  "payload": {
+    "firstName": "Emma",
+    "lastName": "Martin",
+    "email": "emma.martin@example.org",
+    "phone": "+33612345678",
+    "level": "GALOP_3"
+  }
+}
+
+### createHorse
+# @name createHorse
+POST http://localhost:8082/horses
+Content-Type: application/json
+
+{
+  "commandId": "{{$guid}}",
+  "commandType": "CreateHorse",
+  "occurredAt": "{{$datetime iso8601}}",
+  "payload": {
+    "name": "Éclair",
+    "breed": "Selle français",
+    "birthYear": 2016,
+    "minimumRiderLevel": "GALOP_2"
+  }
+}
+
+### createBooking
+# @name createBooking
+POST http://localhost:8083/bookings
+Content-Type: application/json
+
+{
+  "commandId": "{{$guid}}",
+  "commandType": "CreateBooking",
+  "occurredAt": "{{$datetime iso8601}}",
+  "payload": {
+    "riderId": "{{riderId}}",
+    "horseId": "{{horseId}}",
+    "sessionDate": "{{futureDate}}",
+    "durationMinutes": 60,
+    "price": 45.5
+  }
+}
+
+### createPayment
+# @name createPayment
+POST http://localhost:8084/payments
+Content-Type: application/json
+
+{
+  "commandId": "{{$guid}}",
+  "commandType": "CreatePayment",
+  "occurredAt": "{{$datetime iso8601}}",
+  "payload": {
+    "bookingId": "{{bookingId}}"
+  }
+}
+
+### confirmPayment
+# @name confirmPayment
+PATCH http://localhost:8084/payments/{{paymentId}}/confirm
+Content-Type: application/json
+
+{
+  "commandId": "{{$guid}}",
+  "commandType": "ConfirmPayment",
+  "occurredAt": "{{$datetime iso8601}}",
+  "payload": {}
+}
+
+### confirmBooking
+# @name confirmBooking
+PATCH http://localhost:8083/bookings/{{bookingId}}/confirm
+Content-Type: application/json
+
+{
+  "commandId": "{{$guid}}",
+  "commandType": "ConfirmBooking",
+  "occurredAt": "{{$datetime iso8601}}",
+  "payload": {}
+}
+
+### getDashboard
+# @name getDashboard
+GET http://localhost:8085/dashboard/riders/{{riderId}}
+
+### completeBooking
+# @name completeBooking
+PATCH http://localhost:8083/bookings/{{bookingId}}/complete
+Content-Type: application/json
+
+{
+  "commandId": "{{$guid}}",
+  "commandType": "CompleteBooking",
+  "occurredAt": "{{$datetime iso8601}}",
+  "payload": {}
+}
+
+### getCompletedDashboard
+# @name getCompletedDashboard
+GET http://localhost:8085/dashboard/riders/{{riderId}}

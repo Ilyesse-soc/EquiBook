@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "rider.replica",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "riderId",
+    "fullName",
+    "level"
+  ],
+  "properties": {
+    "riderId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "fullName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "BEGINNER",
+        "GALOP_1",
+        "GALOP_2",
+        "GALOP_3",
+        "GALOP_4",
+        "GALOP_5",
+        "GALOP_6",
+        "GALOP_7"
+      ]
+    }
+  }
+}

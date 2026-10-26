@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "rider-dashboard.aggregate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "riderId",
+    "riderName",
+    "riderLevel",
+    "totalBookings",
+    "confirmedBookings",
+    "completedBookings",
+    "cancelledBookings",
+    "totalAmountPaid",
+    "lastBookingDate"
+  ],
+  "properties": {
+    "riderId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "riderName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "riderLevel": {
+      "type": "string",
+      "enum": [
+        "BEGINNER",
+        "GALOP_1",
+        "GALOP_2",
+        "GALOP_3",
+        "GALOP_4",
+        "GALOP_5",
+        "GALOP_6",
+        "GALOP_7"
+      ]
+    },
+    "totalBookings": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "confirmedBookings": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "completedBookings": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cancelledBookings": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "totalAmountPaid": {
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 0.01
+    },
+    "lastBookingDate": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  }
+}

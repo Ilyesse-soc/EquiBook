@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ConfirmBooking",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "commandId",
+    "commandType",
+    "occurredAt",
+    "payload"
+  ],
+  "properties": {
+    "commandId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "commandType": {
+      "const": "ConfirmBooking"
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {}
+    }
+  }
+}

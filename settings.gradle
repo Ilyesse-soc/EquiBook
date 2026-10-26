@@ -1,0 +1,2 @@
+rootProject.name = 'equibook'
+include 'rider-service', 'horse-service', 'booking-service', 'payment-service', 'dashboard-service'

@@ -1,0 +1,49 @@
+{
+  "verifiedAt": "2026-10-26T08:13:50.057223+00:00",
+  "unit": {
+    "rider-service": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "horse-service": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "booking-service": {
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "payment-service": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "dashboard-service": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "unitTotal": 22,
+  "integrationChecks": 51,
+  "health": {
+    "booking-service": "healthy",
+    "dashboard-service": "healthy",
+    "horse-service": "healthy",
+    "mongodb": "healthy",
+    "payment-service": "healthy",
+    "redis": "healthy",
+    "rider-service": "healthy"
+  },
+  "pendingRedisMessages": 0,
+  "pendingOutboxMessages": 0,
+  "riderId": "26ba94d4-6128-4e2c-93c6-1a10290e113e"
+}

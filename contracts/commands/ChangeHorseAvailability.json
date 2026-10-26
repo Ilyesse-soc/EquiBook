@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChangeHorseAvailability",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "commandId",
+    "commandType",
+    "occurredAt",
+    "payload"
+  ],
+  "properties": {
+    "commandId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "commandType": {
+      "const": "ChangeHorseAvailability"
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "RESERVED",
+            "RESTING",
+            "UNAVAILABLE"
+          ]
+        }
+      }
+    }
+  }
+}

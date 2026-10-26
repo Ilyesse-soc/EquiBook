@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "payment.aggregate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "paymentId",
+    "bookingId",
+    "riderId",
+    "amount",
+    "status",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "paymentId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "bookingId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "riderId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "amount": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 1000000,
+      "multipleOf": 0.01
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "PAID",
+        "FAILED",
+        "REFUNDED"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

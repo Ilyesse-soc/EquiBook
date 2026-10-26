@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BookingConfirmed",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId",
+    "eventType",
+    "occurredAt",
+    "emitterService",
+    "receivers",
+    "aggregateId",
+    "aggregateVersion",
+    "payload"
+  ],
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "eventType": {
+      "const": "BookingConfirmed"
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "emitterService": {
+      "const": "booking-service"
+    },
+    "receivers": {
+      "const": [
+        "horse-service",
+        "payment-service",
+        "dashboard-service"
+      ]
+    },
+    "aggregateId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "aggregateVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bookingId",
+        "rider",
+        "horse",
+        "sessionDate",
+        "durationMinutes",
+        "price",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ],
+      "properties": {
+        "bookingId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "rider": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "riderId",
+            "fullName",
+            "level"
+          ],
+          "properties": {
+            "riderId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "fullName": {
+              "type": "string",
+              "minLength": 1
+            },
+            "level": {
+              "type": "string",
+              "enum": [
+                "BEGINNER",
+                "GALOP_1",
+                "GALOP_2",
+                "GALOP_3",
+                "GALOP_4",
+                "GALOP_5",
+                "GALOP_6",
+                "GALOP_7"
+              ]
+            }
+          }
+        },
+        "horse": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "horseId",
+            "name",
+            "minimumRiderLevel",
+            "status"
+          ],
+          "properties": {
+            "horseId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minimumRiderLevel": {
+              "type": "string",
+              "enum": [
+                "BEGINNER",
+                "GALOP_1",
+                "GALOP_2",
+                "GALOP_3",
+                "GALOP_4",
+                "GALOP_5",
+                "GALOP_6",
+                "GALOP_7"
+              ]
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "AVAILABLE",
+                "RESERVED",
+                "RESTING",
+                "UNAVAILABLE"
+              ]
+            }
+          }
+        },
+        "sessionDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "durationMinutes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "price": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000,
+          "multipleOf": 0.01
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "CREATED",
+            "PENDING_PAYMENT",
+            "CONFIRMED",
+            "CANCELLED",
+            "COMPLETED"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "booking.replica",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bookingId",
+    "riderId",
+    "price",
+    "bookingStatus"
+  ],
+  "properties": {
+    "bookingId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "riderId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "price": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 1000000,
+      "multipleOf": 0.01
+    },
+    "bookingStatus": {
+      "type": "string",
+      "enum": [
+        "CREATED",
+        "PENDING_PAYMENT",
+        "CONFIRMED",
+        "CANCELLED",
+        "COMPLETED"
+      ]
+    }
+  }
+}

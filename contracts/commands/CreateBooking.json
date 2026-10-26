@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CreateBooking",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "commandId",
+    "commandType",
+    "occurredAt",
+    "payload"
+  ],
+  "properties": {
+    "commandId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "commandType": {
+      "const": "CreateBooking"
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "riderId",
+        "horseId",
+        "sessionDate",
+        "durationMinutes",
+        "price"
+      ],
+      "properties": {
+        "riderId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "horseId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "sessionDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "durationMinutes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "price": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000,
+          "multipleOf": 0.01
+        }
+      }
+    }
+  }
+}

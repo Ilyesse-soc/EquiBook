@@ -1,0 +1,130 @@
+name: equibook
+services:
+  mongodb:
+    image: mongo:7.0
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports: ["127.0.0.1:${MONGO_HOST_PORT:-27017}:27017"]
+    volumes: ["mongo-data:/data/db"]
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "try { rs.status() } catch(e) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongodb:27017'}]}) }; if (!db.hello().isWritablePrimary) quit(1)"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+  redis:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--appendonly", "yes", "--appendfsync", "always"]
+    ports: ["127.0.0.1:${REDIS_HOST_PORT:-6379}:6379"]
+    volumes: ["redis-data:/data"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  rider-service:
+    build:
+      context: .
+      args:
+        SERVICE: rider-service
+    ports: ["127.0.0.1:${RIDER_HOST_PORT:-8081}:8081"]
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/equibook_riders?replicaSet=rs0
+      REDIS_HOST: redis
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+    restart: unless-stopped
+  horse-service:
+    build:
+      context: .
+      args:
+        SERVICE: horse-service
+    ports: ["127.0.0.1:${HORSE_HOST_PORT:-8082}:8082"]
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/equibook_horses?replicaSet=rs0
+      REDIS_HOST: redis
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8082/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+    restart: unless-stopped
+  booking-service:
+    build:
+      context: .
+      args:
+        SERVICE: booking-service
+    ports: ["127.0.0.1:${BOOKING_HOST_PORT:-8083}:8083"]
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/equibook_bookings?replicaSet=rs0
+      REDIS_HOST: redis
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8083/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+    restart: unless-stopped
+  payment-service:
+    build:
+      context: .
+      args:
+        SERVICE: payment-service
+    ports: ["127.0.0.1:${PAYMENT_HOST_PORT:-8084}:8084"]
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/equibook_payments?replicaSet=rs0
+      REDIS_HOST: redis
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8084/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+    restart: unless-stopped
+  dashboard-service:
+    build:
+      context: .
+      args:
+        SERVICE: dashboard-service
+    ports: ["127.0.0.1:${DASHBOARD_HOST_PORT:-8085}:8085"]
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/equibook_dashboard?replicaSet=rs0
+      REDIS_HOST: redis
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8085/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+    restart: unless-stopped
+volumes:
+  mongo-data:
+  redis-data:

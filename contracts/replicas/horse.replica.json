@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "horse.replica",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "horseId",
+    "name",
+    "minimumRiderLevel",
+    "status"
+  ],
+  "properties": {
+    "horseId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "minimumRiderLevel": {
+      "type": "string",
+      "enum": [
+        "BEGINNER",
+        "GALOP_1",
+        "GALOP_2",
+        "GALOP_3",
+        "GALOP_4",
+        "GALOP_5",
+        "GALOP_6",
+        "GALOP_7"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "AVAILABLE",
+        "RESERVED",
+        "RESTING",
+        "UNAVAILABLE"
+      ]
+    }
+  }
+}

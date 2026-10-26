@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PaymentCreated",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId",
+    "eventType",
+    "occurredAt",
+    "emitterService",
+    "receivers",
+    "aggregateId",
+    "aggregateVersion",
+    "payload"
+  ],
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "eventType": {
+      "const": "PaymentCreated"
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "emitterService": {
+      "const": "payment-service"
+    },
+    "receivers": {
+      "const": [
+        "dashboard-service"
+      ]
+    },
+    "aggregateId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "aggregateVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "paymentId",
+        "bookingId",
+        "riderId",
+        "amount",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ],
+      "properties": {
+        "paymentId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "bookingId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "riderId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "amount": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000,
+          "multipleOf": 0.01
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "PENDING",
+            "PAID",
+            "FAILED",
+            "REFUNDED"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

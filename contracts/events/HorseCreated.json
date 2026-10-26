@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HorseCreated",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId",
+    "eventType",
+    "occurredAt",
+    "emitterService",
+    "receivers",
+    "aggregateId",
+    "aggregateVersion",
+    "payload"
+  ],
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "eventType": {
+      "const": "HorseCreated"
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "emitterService": {
+      "const": "horse-service"
+    },
+    "receivers": {
+      "const": [
+        "booking-service"
+      ]
+    },
+    "aggregateId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "aggregateVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "horseId",
+        "name",
+        "breed",
+        "birthYear",
+        "minimumRiderLevel",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ],
+      "properties": {
+        "horseId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "breed": {
+          "type": "string",
+          "minLength": 1
+        },
+        "birthYear": {
+          "type": "integer",
+          "minimum": 1950
+        },
+        "minimumRiderLevel": {
+          "type": "string",
+          "enum": [
+            "BEGINNER",
+            "GALOP_1",
+            "GALOP_2",
+            "GALOP_3",
+            "GALOP_4",
+            "GALOP_5",
+            "GALOP_6",
+            "GALOP_7"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "RESERVED",
+            "RESTING",
+            "UNAVAILABLE"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

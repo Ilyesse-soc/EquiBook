@@ -1,0 +1,166 @@
+# Exécuter les requêtes une par une. Attendre la réplication entre les étapes.
+# Une réponse 404/409 transitoire peut être rejouée après convergence.
+
+### createRider
+# @name createRider
+< {%
+request.variables.set("now", new Date().toISOString());
+request.variables.set("futureDate", new Date(Date.now() + 2 * 86400000).toISOString());
+%}
+POST http://localhost:8081/riders
+Content-Type: application/json
+
+{
+  "commandId": "{{$uuid}}",
+  "commandType": "CreateRider",
+  "occurredAt": "{{now}}",
+  "payload": {
+    "firstName": "Emma",
+    "lastName": "Martin",
+    "email": "emma.martin@example.org",
+    "phone": "+33612345678",
+    "level": "GALOP_3"
+  }
+}
+> {%
+client.test("Succès HTTP", function () { client.assert(response.status === 200 || response.status === 201); });
+client.global.set("riderId", response.body.riderId);
+%}
+
+### createHorse
+# @name createHorse
+< {%
+request.variables.set("now", new Date().toISOString());
+request.variables.set("futureDate", new Date(Date.now() + 2 * 86400000).toISOString());
+%}
+POST http://localhost:8082/horses
+Content-Type: application/json
+
+{
+  "commandId": "{{$uuid}}",
+  "commandType": "CreateHorse",
+  "occurredAt": "{{now}}",
+  "payload": {
+    "name": "Éclair",
+    "breed": "Selle français",
+    "birthYear": 2016,
+    "minimumRiderLevel": "GALOP_2"
+  }
+}
+> {%
+client.test("Succès HTTP", function () { client.assert(response.status === 200 || response.status === 201); });
+client.global.set("horseId", response.body.horseId);
+%}
+
+### createBooking
+# @name createBooking
+< {%
+request.variables.set("now", new Date().toISOString());
+request.variables.set("futureDate", new Date(Date.now() + 2 * 86400000).toISOString());
+%}
+POST http://localhost:8083/bookings
+Content-Type: application/json
+
+{
+  "commandId": "{{$uuid}}",
+  "commandType": "CreateBooking",
+  "occurredAt": "{{now}}",
+  "payload": {
+    "riderId": "{{riderId}}",
+    "horseId": "{{horseId}}",
+    "sessionDate": "{{futureDate}}",
+    "durationMinutes": 60,
+    "price": 45.5
+  }
+}
+> {%
+client.test("Succès HTTP", function () { client.assert(response.status === 200 || response.status === 201); });
+client.global.set("bookingId", response.body.bookingId);
+%}
+
+### createPayment
+# @name createPayment
+< {%
+request.variables.set("now", new Date().toISOString());
+request.variables.set("futureDate", new Date(Date.now() + 2 * 86400000).toISOString());
+%}
+POST http://localhost:8084/payments
+Content-Type: application/json
+
+{
+  "commandId": "{{$uuid}}",
+  "commandType": "CreatePayment",
+  "occurredAt": "{{now}}",
+  "payload": {
+    "bookingId": "{{bookingId}}"
+  }
+}
+> {%
+client.test("Succès HTTP", function () { client.assert(response.status === 200 || response.status === 201); });
+client.global.set("paymentId", response.body.paymentId);
+%}
+
+### confirmPayment
+# @name confirmPayment
+< {%
+request.variables.set("now", new Date().toISOString());
+request.variables.set("futureDate", new Date(Date.now() + 2 * 86400000).toISOString());
+%}
+PATCH http://localhost:8084/payments/{{paymentId}}/confirm
+Content-Type: application/json
+
+{
+  "commandId": "{{$uuid}}",
+  "commandType": "ConfirmPayment",
+  "occurredAt": "{{now}}",
+  "payload": {}
+}
+> {%
+client.test("Succès HTTP", function () { client.assert(response.status === 200 || response.status === 201); });
+%}
+
+### confirmBooking
+# @name confirmBooking
+< {%
+request.variables.set("now", new Date().toISOString());
+request.variables.set("futureDate", new Date(Date.now() + 2 * 86400000).toISOString());
+%}
+PATCH http://localhost:8083/bookings/{{bookingId}}/confirm
+Content-Type: application/json
+
+{
+  "commandId": "{{$uuid}}",
+  "commandType": "ConfirmBooking",
+  "occurredAt": "{{now}}",
+  "payload": {}
+}
+> {%
+client.test("Succès HTTP", function () { client.assert(response.status === 200 || response.status === 201); });
+%}
+
+### getDashboard
+# @name getDashboard
+GET http://localhost:8085/dashboard/riders/{{riderId}}
+
+### completeBooking
+# @name completeBooking
+< {%
+request.variables.set("now", new Date().toISOString());
+request.variables.set("futureDate", new Date(Date.now() + 2 * 86400000).toISOString());
+%}
+PATCH http://localhost:8083/bookings/{{bookingId}}/complete
+Content-Type: application/json
+
+{
+  "commandId": "{{$uuid}}",
+  "commandType": "CompleteBooking",
+  "occurredAt": "{{now}}",
+  "payload": {}
+}
+> {%
+client.test("Succès HTTP", function () { client.assert(response.status === 200 || response.status === 201); });
+%}
+
+### getCompletedDashboard
+# @name getCompletedDashboard
+GET http://localhost:8085/dashboard/riders/{{riderId}}

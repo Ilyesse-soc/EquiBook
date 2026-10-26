@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "rider.aggregate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "riderId",
+    "firstName",
+    "lastName",
+    "email",
+    "phone",
+    "level",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "riderId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "firstName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lastName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "phone": {
+      "type": "string",
+      "minLength": 1
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "BEGINNER",
+        "GALOP_1",
+        "GALOP_2",
+        "GALOP_3",
+        "GALOP_4",
+        "GALOP_5",
+        "GALOP_6",
+        "GALOP_7"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UpdateHorse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "commandId",
+    "commandType",
+    "occurredAt",
+    "payload"
+  ],
+  "properties": {
+    "commandId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "commandType": {
+      "const": "UpdateHorse"
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "breed",
+        "birthYear",
+        "minimumRiderLevel"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "breed": {
+          "type": "string",
+          "minLength": 1
+        },
+        "birthYear": {
+          "type": "integer",
+          "minimum": 1950
+        },
+        "minimumRiderLevel": {
+          "type": "string",
+          "enum": [
+            "BEGINNER",
+            "GALOP_1",
+            "GALOP_2",
+            "GALOP_3",
+            "GALOP_4",
+            "GALOP_5",
+            "GALOP_6",
+            "GALOP_7"
+          ]
+        }
+      }
+    }
+  }
+}
