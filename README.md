@@ -1,4 +1,4 @@
-# EquiBook — Plateforme de réservation de séances d’équitation
+# EquiBook - Plateforme de réservation de séances d’équitation
 
 ## 1. Présentation d'EquiBook
 
